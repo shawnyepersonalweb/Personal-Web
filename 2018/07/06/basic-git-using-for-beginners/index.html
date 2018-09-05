@@ -13,23 +13,12 @@
 <meta property="og:site_name">
 <meta property="og:description" content="You may have heard Github, so what’s the difference between Git and Github?Git is a version control system invented by Linus Torvalds, the father of Linux.GitHub is a hosting serveice for Git reposito">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/git.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal1.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal2.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal3.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal4.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal5.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal6.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/ignore.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal7.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal8.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal9.png">
-<meta property="og:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/terminal10.png">
-<meta property="og:updated_time" content="2018-09-02T07:27:13.610Z">
+<meta property="og:image" content="https://example.com/image.jpg">
+<meta property="og:updated_time" content="2018-09-04T09:18:23.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Basic Git using for beginners">
 <meta name="twitter:description" content="You may have heard Github, so what’s the difference between Git and Github?Git is a version control system invented by Linus Torvalds, the father of Linux.GitHub is a hosting serveice for Git reposito">
-<meta name="twitter:image" content="https://shawnye1994.github.io/images/basic-git-using-for-beginner/git.png">
+<meta name="twitter:image" content="https://example.com/image.jpg">
     
 
     
@@ -164,14 +153,14 @@
         <div class="base-info profile-block">
             <img id="avatar" src="/css/images/avatar.png" />
             <h2 id="name">Shawn YE</h2>
-            <h3 id="title">Graduate Student Computer Vision &amp; Machine Learning</h3>
+            <h3 id="title">Graduate Student Optics&amp;Computer Science</h3>
             <span id="location"><i class="fas fa-map-marker-alt" style="padding-right: 5px"></i>China</span>
             <a id="follow" target="_blank" href="https://github.com/shawnye1994">FOLLOW</a>
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                2
-                <span>posts</span>
+                1
+                <span>post</span>
             </div>
             <div class="article-info-block">
                 1
@@ -265,7 +254,7 @@
 <p>Briefly speaking, <strong>the Git tracks the change of file that makes it easily to roll back at any time and Git coordinates work between multiple developers.</strong> Git is a great tool can be used not only for the coders, but also other people. Such as a writer who always need to revise his or her work.</p>
 <p><br><img style="vertical-align:middle;width:600px;height=200px;" src="/images/basic-git-using-for-beginner/git.png"></p>
 
-
+<a id="more"></a>
 <h2 id="Now-let’s-start-our-tutorial-for-the-basic-using-of-Git"><a href="#Now-let’s-start-our-tutorial-for-the-basic-using-of-Git" class="headerlink" title="Now, let’s start our tutorial for the basic using of Git."></a>Now, let’s start our tutorial for the basic using of Git.</h2><p>There are some GUI applications for Git, however, if we want to know what does Git exactly do, we’d better to realize all the things by commands manually. All the commands we will covere today are listed below:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br><span class="line">$ git add</span><br><span class="line">$ git status</span><br><span class="line">$ git checkout</span><br><span class="line">$ git commit</span><br><span class="line">$ git branch</span><br><span class="line">$ git checkout</span><br></pre></td></tr></table></figure></p>
 <h1 id="Git-installation-and-initialization"><a href="#Git-installation-and-initialization" class="headerlink" title="Git installation and initialization"></a>Git installation and initialization</h1><p>Before started, we need to install Git software. You can download the Git from <a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a> for your own operating system. After finishing the installation, we will launch the Git bash to finish all our jobs. For windows system, I recommend using Git bash since it enables us using much unix commands. We can check the git version by<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git --version</span><br></pre></td></tr></table></figure></p>
 <p>Create an project folder at any place of your computer, then opend the Git bash here or cd into the foler in Git bash. Here, I create the “Git Tutorial” folder in the desktop of my windows laptop. As it’s empty, we can create some files. Assuming we are creating an web application. So, firstly we create an empty html file: index.html and app.js file by:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ touch index.html</span><br><span class="line">$ touch app.js</span><br></pre></td></tr></table></figure></p>
@@ -361,20 +350,6 @@
     </div>
     
         
-<nav id="article-nav">
-    
-        <a href="/2018/09/02/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    Hello World
-                
-            </div>
-        </a>
-    
-    
-</nav>
-
 
     
 </article>
