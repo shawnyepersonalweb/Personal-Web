@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Python Seam Carving Algorithm | Shawn Ye&#39;s Personal Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="What is Seam Carving?Sometimes, we may need to resize or crop our images or photos to fullfill the requirement of some applications. However, if our desired image aspect ratio is different from the o">
+<meta name="keywords" content="Image Processing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Seam Carving Algorithm">
+<meta property="og:url" content="https://shawnye1994.github.io/2018/08/06/Seam-Carving/index.html">
+<meta property="og:site_name" content="Shawn Ye&#39;s Personal Blog">
+<meta property="og:description" content="What is Seam Carving?Sometimes, we may need to resize or crop our images or photos to fullfill the requirement of some applications. However, if our desired image aspect ratio is different from the o">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/tower_result.png">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/beach.jpg">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/beach_normal_crop.jpg">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/tower.jpg">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/tower_normal_crop.jpg">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/table1.JPG">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/table2.JPG">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/table3.JPG">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/beach_result.png">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/tower_result.png">
+<meta property="og:image" content="https://shawnye1994.github.io/images/seam-carving/tree_result.jpg">
+<meta property="og:updated_time" content="2018-09-11T03:30:29.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python Seam Carving Algorithm">
+<meta name="twitter:description" content="What is Seam Carving?Sometimes, we may need to resize or crop our images or photos to fullfill the requirement of some applications. However, if our desired image aspect ratio is different from the o">
+<meta name="twitter:image" content="https://shawnye1994.github.io/images/seam-carving/tower_result.png">
+    
+
+    
+        <link rel="alternate" href="/" title="Shawn Ye&#39;s Personal Blog" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome5/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/libs/font-awesome5/css/fa-brands.min.css">
+    <link rel="stylesheet" href="/libs/font-awesome5/css/fa-solid.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-125352203-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">Shawn Ye&#39;s Personal Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/wallE.jpg" />
+                            <i class="fas fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fas fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile" class="profile-fixed">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/wallE.jpg" />
+            <h2 id="name">Shawn YE</h2>
+            <h3 id="title">Graduate Student Optics&amp;Computer Science shawnye1994@gmail.com</h3>
+            <span id="location"><i class="fas fa-map-marker-alt" style="padding-right: 5px"></i>China</span>
+            <a id="follow" target="_blank" href="https://github.com/shawnye1994">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                2
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                2
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/shawnye1994" target="_blank" title="github" class=tooltip>
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="twitter" class=tooltip>
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="facebook" class=tooltip>
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="dribbble" class=tooltip>
+                            <i class="fab fa-dribbble"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="rss" class=tooltip>
+                            <i class="fab fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Seam-Carving" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Python Seam Carving Algorithm
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fas fa-calendar-alt"></i>
+        <a href="/2018/08/06/Seam-Carving/">
+            <time datetime="2018-08-06T09:29:56.000Z" itemprop="datePublished">2018-08-06</time>
+        </a>
+    </div>
+
+
+                        
+                        
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Image-Processing/">Image Processing</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p><img style="float:left;vertical-align:middle;width:1300px;height=300px;" src="/images/seam-carving/tower_result.png"><br><br style="clear:left"></p>
+<h2 id="What-is-Seam-Carving"><a href="#What-is-Seam-Carving" class="headerlink" title="What is Seam Carving?"></a>What is <a href="https://en.wikipedia.org/wiki/Seam_carving" target="_blank" rel="noopener">Seam Carving</a>?</h2><p>Sometimes, we may need to resize or crop our images or photos to fullfill the requirement of some applications. However, if our desired image aspect ratio is different from the original aspect ratio, we meet a big problem that the resized image will be distored if we take the simple downsample or upsample method, such as linear interpolation methods. Such as the image scaling process below:<br><a id="more"></a></p>
+<h3 id="Original-image-with-size-360X640"><a href="#Original-image-with-size-360X640" class="headerlink" title="Original image with size 360X640"></a>Original image with size 360X640</h3><p><img style="float:left;vertical-align:middle;width:320px;height=180px;" src="/images/seam-carving/beach.jpg"><br><br style="clear:left"></p>
+<h3 id="Resized-image-with-size-360X360-by-PhotoShop"><a href="#Resized-image-with-size-360X360-by-PhotoShop" class="headerlink" title="Resized image with size 360X360 by PhotoShop"></a>Resized image with size 360X360 by PhotoShop</h3><p><img style="float:left;vertical-align:middle;width:180px;height=180px;" src="/images/seam-carving/beach_normal_crop.jpg"></p>
+
+<p><br style="clear:left"><br>As we can see, the people in the resized image are squeezed and looks much more thiner and taller, it’s undesired. Let’s look at another example:</p>
+<h3 id="Original-image-with-size-487X719"><a href="#Original-image-with-size-487X719" class="headerlink" title="Original image with size 487X719"></a>Original image with size 487X719</h3><p><img style="float:left;vertical-align:middle;width:320px;height=180px;" src="/images/seam-carving/tower.jpg"><br><br style="clear:left"></p>
+<h3 id="Resized-image-with-size-487X487-by-PhotoShop"><a href="#Resized-image-with-size-487X487-by-PhotoShop" class="headerlink" title="Resized image with size 487X487 by PhotoShop"></a>Resized image with size 487X487 by PhotoShop</h3><p><img style="float:left;vertical-align:middle;width:180px;height=180px;" src="/images/seam-carving/tower_normal_crop.jpg"></p>
+
+<p><br style="clear:left"><br>Or we have another option, just crop some part of the original image. Such as the first image, we can crop the right part beach. However, for the second the image, we cannot crop if we wanty to keep the child and tower, since both of them are important information. What if we can remove the less unimportant part of the image automatically? Such as the sky and sea in the first image or the sky and grass in the second image.</p>
+<p><strong>Seam Carving is exactly an magic algorithm which ables to resize an image without distortion. It is a Content-Aware algorithm that finds the least-importan path, a seam, in the image and then remove it or insert another seam to scale the iamge.</strong></p>
+<p>In this post, we will learn the basic principle of Seam Carving and implement it by Python. The libraries we will use include opencv and numpy.</p>
+<h2 id="Seam-Carving"><a href="#Seam-Carving" class="headerlink" title="Seam Carving"></a>Seam Carving</h2><h3 id="Compute-accumulate-energy-map"><a href="#Compute-accumulate-energy-map" class="headerlink" title="Compute accumulate energy map"></a>Compute accumulate energy map</h3><p>Firstly, we need to propose a metric to measure people’s attention on image. As people usually focus on the edge of objects, here we will take an simple but efficient metric, the gradient magnitude of image. The image gradient is one of the foundamental building blocks in iamge processing. There are many methods to calculate gradient, most common way is spatial filtering by convolving the image with edge detector operators. Edge detection oeprators includes sobel operator, laplacian operator, canny operator, etc. We will take laplacian operator in this post, the detail mathmatical formation of Laplacian operator refers to the <a href="https://en.wikipedia.org/wiki/Discrete_Laplace_operator" target="_blank" rel="noopener">wikipedia</a>.</p>
+<p>So, let’s compute the Laplacian of image by opencv. We will call the Laplacian of image to be the energey_map.<br><figure class="highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pylab <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">original_img = cv2.imread(<span class="string">'beach.jpg'</span>)</span><br><span class="line">img_gray = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)</span><br><span class="line">energy_map = cv2.Laplacian(img_gray, cv2.CV_64F)</span><br><span class="line">energy_map = np.absolute(energy_map)</span><br></pre></td></tr></table></figure></p>
+<p>Now, we need to figure out the <strong>most tricky part</strong> of the Seam Carving—Find the lowest energy path. In this post, we will find the vertical(from top to bottom) seam, the horizontal seam can be compute by the same principle. For any pixel of the energy map, we will compute the accumulate energy map row by row from top to bottom. For each pixel, it’s upper pixels are the top 3 pixels of it’s <a href="https://en.wikipedia.org/wiki/Pixel_connectivity" target="_blank" rel="noopener">eight-connected</a>. For the pixel located in the boundary, it only has two upper pixels. And we will select the one with lowest accumulate energy from the e upper pixels as the previous pixel of the lowest energy path which pass the pixel.<br>Let’s take a simple energy map as example, which only contains 3 rows of pixels. The Red number is the energy number(Laplacian value) of this pixel, the black number is the computed accumulated energy.</p>
+<p><img style="float:left;vertical-align:middle;width:800px;height=300px;" src="/images/seam-carving/table1.JPG"></p><br><br style="clear:left"><br><p><img style="float:left;vertical-align:middle;width:800px;height=300px;" src="/images/seam-carving/table2.JPG"></p><br><br style="clear:left"><br><p><img style="float:left;vertical-align:middle;width:800px;height=300px;" src="/images/seam-carving/table3.JPG"></p>
+
+<p>The accumulated energy path can be done by the code below:<br><figure class="highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">accumulated_map = energy_map</span><br><span class="line">    H,W = energy_map.shape</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> range(<span class="number">1</span>,H):</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">0</span>,W):</span><br><span class="line">            <span class="keyword">if</span> w == <span class="number">0</span>:</span><br><span class="line">                upper_pixels = [energy_map[h<span class="number">-1</span>,w], energy_map[h<span class="number">-1</span>, w+<span class="number">1</span>]]</span><br><span class="line">            <span class="keyword">elif</span> w == W<span class="number">-1</span>:</span><br><span class="line">                upper_pixels = [energy_map[h<span class="number">-1</span>, w<span class="number">-1</span>], energy_map[h<span class="number">-1</span>,w]]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                upper_pixels = [energy_map[h<span class="number">-1</span>, w<span class="number">-1</span>], energy_map[h<span class="number">-1</span>,w],</span><br><span class="line">                                energy_map[h<span class="number">-1</span>, w+<span class="number">1</span>]]</span><br><span class="line">            min_energy = np.amin(upper_pixels)</span><br><span class="line">            accumulated_map[h,w] += min_energy</span><br></pre></td></tr></table></figure></p>
+<h3 id="Get-the-seam-and-remove-it"><a href="#Get-the-seam-and-remove-it" class="headerlink" title="Get the seam and remove it"></a>Get the seam and remove it</h3><p>It is obvious that the pixel with minimum value in the last row of accumulated energy map is the end pixel of the lowest energy path, or the seam. The yellow pixels in the example above show the seam. Let’s start from the end pixel of the seam to find the whole path and remove the pixel on the seam at same time.<br><figure class="highlight python"><figcaption><span>[]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">min_index = np.argmin(accumulated_map[H<span class="number">-1</span>,:])</span><br><span class="line"><span class="keyword">if</span> min_index == <span class="number">0</span>:</span><br><span class="line">    upper_index = [<span class="number">0</span>, <span class="number">2</span>]</span><br><span class="line"><span class="keyword">elif</span> min_index == W<span class="number">-1</span>:</span><br><span class="line">    upper_index = [W<span class="number">-2</span>, W]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    upper_index = [min_index<span class="number">-1</span>, min_index+<span class="number">2</span>]</span><br><span class="line">path = [[H<span class="number">-1</span>, min_index]]</span><br><span class="line">single_crop[H<span class="number">-1</span>, <span class="number">0</span>:min_index] = original_img[H<span class="number">-1</span>, <span class="number">0</span>:min_index]</span><br><span class="line">single_crop[H<span class="number">-1</span>, min_index:] = original_img[H<span class="number">-1</span>, min_index+<span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> h <span class="keyword">in</span> reversed(range(<span class="number">0</span>, H<span class="number">-1</span>)):</span><br><span class="line">    temp_index = np.argmin(accumulated_map[h,upper_index[<span class="number">0</span>]:upper_index[<span class="number">1</span>]])</span><br><span class="line">    min_index = list(range(upper_index[<span class="number">0</span>], upper_index[<span class="number">1</span>]))[temp_index]</span><br><span class="line">    path.append([h, min_index])</span><br><span class="line">    single_crop[h, <span class="number">0</span>:min_index] = original_img[h, <span class="number">0</span>:min_index]</span><br><span class="line">    single_crop[h, min_index:] = original_img[h, min_index+<span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> min_index == <span class="number">0</span>:</span><br><span class="line">        upper_index = [<span class="number">0</span>, <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">elif</span> min_index == W<span class="number">-1</span>:</span><br><span class="line">        upper_index = [W<span class="number">-2</span>, W]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        upper_index = [min_index <span class="number">-1</span>, min_index +<span class="number">2</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Now, we have covered the core of the Seam Carving algorithm and implemented a naive version by python. With the help of codes above, we can find the seam of input image and remove it. Excute the code above each time, we will get an image with size of (Height, Width-1). When we are doing resize, we can repeat this operation to reach our desired Width. If we want to reduce the Height, we can find the horizontal seam based on the same principle, or just rotate the image 90 degrees(Transpose the image matrix) and find the vertical seam of rotated image.</p>
+<h3 id="Seam-Carving-Result"><a href="#Seam-Carving-Result" class="headerlink" title="Seam Carving Result"></a>Seam Carving Result</h3><p><strong>The complete source code of Seam Carving can be downloaded <a href="https://github.com/shawnye1994/Seam-Carving/releases" target="_blank" rel="noopener">here</a></strong>. The complete code can resize the image to any size you want by seam carving. Let’s look at the results of some test images. The left one is original image, the middle one is ther Seam Carving image based our algorithm and the right one the resized image by photoshop.</p>
+<p></p><p><img style="float:left;vertical-align:middle;width:1300px;height=300px;" src="/images/seam-carving/beach_result.png"></p><br><br style="clear:left"><p></p>
+<p></p><p><img style="float:left;vertical-align:middle;width:1300px;height=300px;" src="/images/seam-carving/tower_result.png"></p><br><br style="clear:left"><p></p>
+<p></p><p><img style="float:left;vertical-align:middle;width:1300px;height=300px;" src="/images/seam-carving/tree_result.jpg"></p><br><br style="clear:left"><p></p>
+<p>It’s clear that Seam Carving result is better than normal resize by photoshop, and we won’t bother to decide to crop which part of the iamge. However, as we observe the second result, the left bottom of tower after seam carving has little distortioin, like erosion. Besides, the speed of our current algorithm is quite slow. So, our naive Seam Carving needed further improvement. If you have any suggestion about the improvement, please comment below, I will be much appreaciate.</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+</div>
+
+            
+    
+        <a href="https://shawnye1994.github.io/2018/08/06/Seam-Carving/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://shawnye1994.github.io/2018/08/06/Seam-Carving/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/07/05/basic-git-using-for-beginners/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Basic Git using for beginners</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Shawn Ye<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://shawnye1994.github.io/2018/08/06/Seam-Carving/';
+        
+        this.page.identifier = 'Seam-Carving';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'shawnye-personal-blog' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
